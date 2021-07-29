@@ -96,7 +96,7 @@ void main() {
 	// closesocket(clientsocket);
 #pragma endregion
 
-	#pragma region Varios Clientes 
+	 #pragma region Varios Clientes 
 	 /*5) Declaring the socket sets*/
 	 fd_set master;
 	 /* Se limpia el set*/
