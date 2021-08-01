@@ -15,6 +15,8 @@ namespace ClientSideChatUI
         public Form1()
         {
             InitializeComponent();
+
+
         }
 
     }
