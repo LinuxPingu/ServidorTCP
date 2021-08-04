@@ -15,7 +15,7 @@ namespace ClientSideChatUI
             InitializeComponent();
 
             _client = new TcpClient();
-            _client.Connect(" ", 54000);
+            _client.Connect("127.0.0.1", 54000);
             _client.GetStream().BeginRead(_buffer, 0,
                                           _buffer.Length,
                                           Server_MessageReceived,
@@ -41,11 +41,19 @@ namespace ClientSideChatUI
                     // on the main thread. This method is being called on a worker
                     // thread so using the form's BeginInvoke() method is vital to
                     // ensure that the action is performed on the main thread.
-                    BeginInvoke((Action)(() =>
+                    if (IsHandleCreated)
                     {
-                        listBox1.Items.Add(str);
-                        listBox1.SelectedIndex = listBox1.Items.Count - 1;
-                    }));
+                        BeginInvoke((Action)(() =>
+                        {
+                            listBox1.Items.Add(str);
+                            listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                        }));
+                    }
+                    else
+                    {
+                        
+                    }
+                 
                 }
 
                 // Clear the buffer and start listening again
