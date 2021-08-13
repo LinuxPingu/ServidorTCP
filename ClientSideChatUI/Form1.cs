@@ -26,21 +26,21 @@ namespace ClientSideChatUI
         {
             if (ar.IsCompleted)
             {
-                // End the stream read
+                // Finalizar la lectura del flujo
                 var bytesIn = _client.GetStream().EndRead(ar);
                 if (bytesIn > 0)
                 {
-                    // Create a string from the received data. For this server 
-                    // our data is in the form of a simple string, but it could be
-                    // binary data or a JSON object. Payload is your choice.
+                    // Crea un string a partir de los datos recibidos. Para este servidor 
+                    //los datos están en forma de un simple string, pero podría ser datos
+                    // binarios o un objeto JSON. Payload is your choice.
                     var tmp = new byte[bytesIn];
                     Array.Copy(_buffer, 0, tmp, 0, bytesIn);
                     var str = Encoding.ASCII.GetString(tmp);
 
-                    // Any actions that involve interacting with the UI must be done
-                    // on the main thread. This method is being called on a worker
-                    // thread so using the form's BeginInvoke() method is vital to
-                    // ensure that the action is performed on the main thread.
+                    // Cualquier acción que implique interactuar con la UI (interfaz de usuario)
+                    // debe hacerse en el hilo principal. Este método es llamado en
+                    //un hilo de trabajo , así que usar el método BeginInvoke() del 
+                    //formulario es vital para asegurar que la acción se realiza en el hilo principal.
                     if (IsHandleCreated)
                     {
                         BeginInvoke((Action)(() =>
@@ -56,7 +56,7 @@ namespace ClientSideChatUI
                  
                 }
 
-                // Clear the buffer and start listening again
+                // Borrar el buffer y empezar a escuchar de nuevo
                 Array.Clear(_buffer, 0, _buffer.Length);
                 _client.GetStream().BeginRead(_buffer, 0,
                                               _buffer.Length,
@@ -72,13 +72,18 @@ namespace ClientSideChatUI
 
         private void Enviar_Click(object sender, EventArgs e)
         {
-            // Encode the message and send it out to the server.
+            // Codificar el mensaje y enviarlo al servidor.
             var msg = Encoding.ASCII.GetBytes(textBox1.Text);
             _client.GetStream().Write(msg, 0, msg.Length);
 
-            // Clear the text box and set it's focus
+            // Borrar el cuadro de texto y ponerlo en foco
             textBox1.Text = "";
             textBox1.Focus();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
